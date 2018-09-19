@@ -1,0 +1,41 @@
+#! /usr/bin/python
+"""
+    This script allows controlling the position of two servos attached to Arduino Micro
+    through ROS. For this to work, the Arduino program that is shipped with this script
+    needs to be installed on the Arduino.
+"""
+
+import rospy
+import serial
+from arduino_servo_control.srv import *
+
+
+class ServoBridge(object):
+    def __init__(self, device, baud=9600):
+        self._device_name = device
+        self._baud_rate = baud
+        self._serial_con = None
+
+    def __enter__(self):
+        self._serial_con = serial.Serial(self._device_name, self._baud_rate)
+
+    def __exit__(self):
+        self._serial_con.close()
+
+    def set_target_angles(self, request):
+        self._serial_con.write('%i,%i' % (request.angle_servo_0, request.angle_servo_1))
+        return SetServoAnglesResponse()
+
+
+if __name__ == '__main__':
+    rospy.init_node('arduino_servo_control')
+    device_name = rospy.get_param("device_name", "/dev/ttyACM0")
+    bridge = ServoBridge(device_name)
+    # Create service
+    set_angle_service = rospy.Service(rospy.get_name() + '/set_servo_angles',
+                                    SetServoAngles, bridge.set_target_angles)
+    # Spin until node is killed
+    with bridge:
+        rospy.spin()
+    sys.exit(0)
+
