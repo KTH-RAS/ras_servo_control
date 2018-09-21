@@ -12,7 +12,7 @@ void setup() {
   Serial.begin(9600); // initialize serial  
   servos[0].attach(servo_pins[0]);  // attaches the servo object to the given pin
   servos[1].attach(servo_pins[1]);  // attaches the servo object to the given pin
-  // set both servos to start angles
+  // set both servos to start angles (if you do not do this, it moves to 90 degrees by default)
   servos[0].write(target_angles[0]);
   servos[1].write(target_angles[1]);
 }
