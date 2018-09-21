@@ -3,23 +3,26 @@
 Servo servos[2];  // create two servo objects to control servos
 // twelve servo objects can be created on most boards
 
-int servo_pins[] = {9, 10};  // pins for servos
+const int servo_pins[] = {9, 10};  // pins for servos
+const int sleep_time = 20;  // sleeping time until the loop checks again for new targets
+
 int target_angles[] = {0, 0}; // variable to store target position for servos
-int sleep_time = 20;  // sleeping time until the loop checks again for new targets
 
 void setup() {
   Serial.begin(9600); // initialize serial  
   servos[0].attach(servo_pins[0]);  // attaches the servo object to the given pin
   servos[1].attach(servo_pins[1]);  // attaches the servo object to the given pin
+  // set both servos to start angles
+  servos[0].write(target_angles[0]);
+  servos[1].write(target_angles[1]);
 }
 
 void read_targets() {
-  while (Serial.available() > 0) {
-    String str_num1 = Serial.readStringUntil(',');
-    String str_num2 = Serial.readString();
-    target_angles[0] = constrain(str_num1.toInt(), 0, 180);
-    target_angles[1] = constrain(str_num2.toInt(), 0, 180);
-  }
+  // the message we expect has the shape "x,y\n" where x and y are decimal string representations of integers
+  String num_1_str = Serial.readStringUntil(',');
+  String num_2_str = Serial.readStringUntil('\n');
+  target_angles[0] = constrain(num_1_str.toInt(), 0, 180);
+  target_angles[1] = constrain(num_2_str.toInt(), 0, 180);
 }
 
 void loop() {
