@@ -25,10 +25,15 @@ source ../devel/setup.bash
 The sketch (=Arduino program) in the folder arduino_servo_control is already installed on your Arduino Micro.
 If you want to know how to install the sketch, check the official resources: https://www.arduino.cc/
 
-The pins for the servos are hardcoded in the sketch. You need to connect the data wire of your servos to pins 9 and 10.
-**TODO**: Instructions on how to connect the servos to power etc.
+The pins for the servos are hardcoded in the sketch. You need to connect the
+data wire of your servos to pins 9 and 10, i.e. one pin for each servo. The black cable of each servo
+should be connected to the GND pin of the Arduino, and the red cable to the VCC pin.
+To connect the servos to the Arduino you need to use the jumper cables that are in your equipment box:
+![How to connect a servo with jumper cables](https://github.com/KTH-RAS/ras_servo_control/blob/master/docs/DSC_1047.JPG)
+Once everything is connected, it should look like this:
+![Connecting servos to breadboard](https://github.com/KTH-RAS/ras_servo_control/blob/master/docs/DSC_1046.JPG)
 
-Lastly, connect your Arduino to your NUC/computer using a Micro-USB cable. **Note:** After the Arduino booted it will send a signal to both attached servos to move to angle 0. If you want to change this behavior, you need to update the sketch. The initial angles are set [here](https://github.com/KTH-RAS/ras_servo_control/blob/master/arduino_servo_control/arduino_servo_control.ino#L9).
+Lastly, connect your Arduino to your NUC/computer using a Micro-USB cable. **Note:** After the Arduino booted, it will send a signal to both attached servos to move to angle 0. If you want to change this behavior, you need to update the sketch. The initial angles are set [here](https://github.com/KTH-RAS/ras_servo_control/blob/master/arduino_servo_control/arduino_servo_control.ino#L9).
 
 ## Running the node and commanding servo angles
 Once everything is connected, run 
